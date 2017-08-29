@@ -1,0 +1,10 @@
+{
+  "dbs": {
+    "inventory":{
+      "dbUser": "",
+      "dbPassword": "",
+      "dbHost": "",
+      "dbPort": ""
+    }
+  }
+}

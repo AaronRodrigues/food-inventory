@@ -1,0 +1,16 @@
+/**
+* Tell babel to use the es2015 (babel-preset-2015) and
+* react (babel-preset-react) plugins to translate
+* ES6 and JSX syntax respectively.
+*
+*   - style-loader is a webpack loader that can load some CSS
+*     and inject it into the document via the <link> tag.
+*
+*   - css-loader is the loader that can parse a CSS file and
+*     apply various tranforms to it.
+*/
+{
+  "presets": [
+    "es2015", "react"
+  ]
+}

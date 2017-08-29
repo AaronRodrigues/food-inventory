@@ -1,0 +1,15 @@
+.minusBtn {
+  float: left;
+}
+
+.plusBtn {
+  float: right;
+}
+
+.tableHead {
+  text-align: center;
+}
+
+.addNewBtn {
+  margin-bottom: 1em;
+}

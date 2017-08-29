@@ -1,54 +1,39 @@
 "use strict";
-
-const express = require('express');
-const router = express.Router();
-const dbHelper = require('../config/dbHelpers');
 const appRootPath = require('app-root-path');
 
-
-/**
- * All routes will start '/api' because of the middleware path setup in app.js
- */ 
-
-router.get('/get', (req, res) => {
-  dbHelper.findOne(req.query).then( items => {
-    res.json(items);
-  }).catch( e => {
-    res.status(400).json('Request failed');
+module.exports = (app, passport) => {
+  app.get('/', (req,res) => {
+    res.redirect('/login');
   });
-});
 
-router.get('/getAll', (req, res) => {
-  dbHelper.findMultiple(req.query).then( items => {
-    res.json(items);
-  }).catch( e => {
-    res.status(400).json('Request failed');
+  app.get('/login', (req, res) => {
+    res.sendFile(appRootPath + '/views/signin.html');
   });
-});
 
-router.post('/post', (req, res) => {
-  dbHelper.addOne(req.body).then( item => {
-    res.json(item);
-  }).catch( e => {
-    res.status(400).json('Request failed');
+  // app.get('/signup', (req,res) => {
+  //   res.sendFile(appRootPath + '/views/signup.html');
+  // });
+
+  // app.post('/signup', passport.authenticate('local-signup', {
+  //   successRedirect : '/app', 
+  //   failureRedirect : '/signup'
+  // }));
+
+  app.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/app',
+    failureRedirect: '/login'
+  }));
+
+  app.get('/app*', isLoggedIn, (req, res) => {
+    res.sendFile(appRootPath + '/dist/app.html');
   });
-});
 
-router.put('/put', (req, res) => {
-  dbHelper.modifyOne(req.body)
-    .then( response => {
-      res.json('success');
-    });
-});
+}
 
-router.delete('/delete', (req, res) => {
-  dbHelper.deleteOne(req.query).then( removed => {
-    res.json(removed);
-  }).catch( e => {
-    res.json(e);
-  });
-});
+const isLoggedIn = (req,res,next) => {
+  if(req.isAuthenticated()) {
+    return next();
+  }
 
-
-
-module.exports = router;
+  res.redirect('/login');
+}

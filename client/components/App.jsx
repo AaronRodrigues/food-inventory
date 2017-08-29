@@ -14,10 +14,12 @@ export default class App extends Component {
     this.state = {
       result: null,
       displayNewForm: false,
+      displaySearch: false,
       name: '',
       location: '',
       num_of_items: '',
-      type: ''
+      type: '',
+      searchTerm: ''
     }
 
     this.getInventory = this.getInventory.bind(this);
@@ -26,6 +28,8 @@ export default class App extends Component {
     this.handleFormDisplay = this.handleFormDisplay.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
+    this.handleSearchDisplay = this.handleSearchDisplay.bind(this);
   }
 
   getInventory() {
@@ -77,14 +81,27 @@ export default class App extends Component {
   }
 
   handleFormDisplay() {
-    let newState = !this.state.displayNewForm 
+    let newState = !this.state.displayNewForm; 
     this.setState({displayNewForm: newState});
   }
 
+  handleSearchDisplay() {
+    let newState = !this.state.displaySearch;
+    this.setState({displaySearch: newState});
+  }
+
   handleDelete(id) {
-    axios.delete('/api/delete?id='+id).then( () => {
+    axios.delete('/api/delete?_id='+id).then( () => {
       return this.getInventory();
     });
+  }
+
+  onSearchSubmit(event) {
+    event.preventDefault();
+    return axios.get('/api/getAll?name=' + this.state.searchTerm)
+      .then(response => {
+        this.setState({result: response.data});
+      });
   }
 
   handleFormSubmit(event) {
@@ -102,18 +119,22 @@ export default class App extends Component {
   }
 
   render() {
-    const {result, displayNewForm} = this.state;
+    const {result, displayNewForm, displaySearch, searchTerm} = this.state;
     return (
       <div style={{textAlign: 'center'}}>
         <div className="container">
           <div className="jumbotron">
             <h1 className="display-3">Welcome to your inventory!</h1>
             <hr className="display-4"/>
-            <Button 
-              onClick={this.handleFormDisplay}
-              className="addNewBtn">
-            Add New
-            </Button>
+            <div className="row justify-content-center">
+              <div className="col-xs-12">
+                <Button 
+                  onClick={this.handleFormDisplay}
+                  className="addNewBtn">
+                Add New
+                </Button>
+              </div>
+            </div>
             {
               displayNewForm ?
                 <Form onSubmit={this.handleFormSubmit}>
@@ -151,6 +172,29 @@ export default class App extends Component {
                 </Form>
               : null
             }
+            <div className="row justify-content-center">
+              <div className="col-xs-12">
+                <Button onClick={this.handleSearchDisplay} className="searchBtn">
+                  Search
+                </Button>
+              </div>
+            </div>
+             {
+              displaySearch ?
+              <Form onSubmit={this.onSearchSubmit}>
+                <FormGroup 
+                  type="text"
+                  name="Search Term"
+                  id="searchTerm"
+                  value={searchTerm}
+                  onChange={this.handleChange}
+                />
+                <button className="btn">
+                  Search
+                </button>
+              </Form>
+              : null
+            } 
             </div>
           </div>
         {

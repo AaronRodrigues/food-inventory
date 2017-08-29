@@ -29,6 +29,15 @@ module.exports = {
     });    
   },
 
+  findById(query) {
+    return new Promise( (resolve, reject) => {
+      return Inventory.findOne(query, (err, items) => {
+        if (err) reject(err);
+        resolve(items);
+      });
+    });
+  },
+
   findMultiple(query) {
     query = convertToRegex(query);
     return new Promise( (resolve, reject) => {
@@ -60,7 +69,7 @@ module.exports = {
 
   deleteOne(query) {
     return new Promise( (resolve, reject) => {
-      return this.findOne(query).then( (item) => {
+      return this.findById(query).then( (item) => {
         return item.remove( (err, removed) => {
           if(err) reject(err);
           resolve(removed);
@@ -70,8 +79,9 @@ module.exports = {
   }
 
 }
+
 const convertToRegex = queryObj => {
-  Object.keys(queryObj)
+  return Object.keys(queryObj)
     .reduce( (ac, val) => {
       // Push to accumulator object
       ac[val] = new RegExp(queryObj[val], 'i');

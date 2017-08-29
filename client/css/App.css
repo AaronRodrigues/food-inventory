@@ -10,6 +10,10 @@
   text-align: center;
 }
 
-.addNewBtn {
+.addNewBtn, .searchBtn {
   margin-bottom: 1em;
+}
+
+.searchBtn {
+  margin-top: 1em;
 }

@@ -1,4 +1,5 @@
 const path                      = require('path');
+const webpack                   = require('webpack');
 
 /**
  * Create a HTML file using the HtmlWebpackPlugin
@@ -12,7 +13,7 @@ const HtmlWebpackPluginConfig   = new HtmlWebpackPlugin({
    * to the dist folder as specified in the output
    * configuration object (path)
    */
-  filename: 'index.html',
+  filename: 'app.html',
   // Inject the resources at the bottom of the body element
   inject: 'body'
 })
@@ -56,5 +57,13 @@ module.exports = {
       }
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  plugins: [
+    HtmlWebpackPluginConfig,
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  ]
 }

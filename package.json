@@ -8,22 +8,24 @@
     "start-test": "nodemon index.js"
   },
   "keywords": [],
-  "author": "Simon Drake",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^2.0.1",
     "axios": "^0.16.2",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "html-webpack-plugin": "^2.30.1",
     "http": "0.0.0",
-    "https": "^1.0.0",
     "mongoose": "^4.11.6",
+    "morgan": "^1.8.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "react-bootstrap-table": "^4.0.1",
-    "react-table": "^6.5.3"
+    "react-router-dom": "^4.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
